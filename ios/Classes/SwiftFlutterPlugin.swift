@@ -9,6 +9,18 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+    let arguments = call.arguments as! NSDictionary
+    switch call.method {
+        case "debug":
+            print(arguments["message"])
+            result(nil)
+            break
+        case "error":
+            print(arguments["message"])
+            result(nil)
+            break
+        default:
+            result(FlutterMethodNotImplemented)
+    }
   }
 }
