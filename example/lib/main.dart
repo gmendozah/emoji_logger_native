@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
               child: Text('error'),
               onPressed: () {
-                FlutterPlugin.debug('this is error');
+                FlutterPlugin.error('this is error');
               },
             ),
           ],
