@@ -26,19 +26,19 @@ class FlutterPluginWeb {
   /// https://flutter.dev/go/federated-plugins
   Future<dynamic> handleMethodCall(MethodCall call) async {
     switch (call.method) {
-      case 'getPlatformVersion':
-        return getPlatformVersion();
+      case 'debug':
+        final message = call.arguments['message'];
+        html.window.console.log('🤣 $message');
+        break;
+      case 'error':
+        final message = call.arguments['message'];
+        html.window.console.log('👾 $message');
+        break;
       default:
         throw PlatformException(
           code: 'Unimplemented',
           details: 'flutter_plugin for web doesn\'t implement \'${call.method}\'',
         );
     }
-  }
-
-  /// Returns a [String] containing the version of the platform.
-  Future<String> getPlatformVersion() {
-    final version = html.window.navigator.userAgent;
-    return Future.value(version);
   }
 }
