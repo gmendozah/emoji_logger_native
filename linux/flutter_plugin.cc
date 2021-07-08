@@ -6,6 +6,8 @@
 
 #include <cstring>
 
+#include <iostream>
+
 #define FLUTTER_PLUGIN(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST((obj), flutter_plugin_get_type(), \
                               FlutterPlugin))
@@ -23,13 +25,16 @@ static void flutter_plugin_handle_method_call(
   g_autoptr(FlMethodResponse) response = nullptr;
 
   const gchar* method = fl_method_call_get_name(method_call);
-
-  if (strcmp(method, "getPlatformVersion") == 0) {
-    struct utsname uname_data = {};
-    uname(&uname_data);
-    g_autofree gchar *version = g_strdup_printf("Linux %s", uname_data.version);
-    g_autoptr(FlValue) result = fl_value_new_string(version);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+  //get args
+  FlValue* args = fl_method_call_get_args(method_call);
+  FlValue* value = fl_value_lookup_string(args, "message");
+  const char* message = fl_value_get_string(value);
+  if (strcmp(method, "debug") == 0) {
+     std::cout << g_strdup_printf("🤣 %s", message);
+     response = FL_METHOD_RESPONSE(fl_method_success_response_new(NULL));
+  } else if (strcmp(method, "error") == 0) {
+     std::cout << g_strdup_printf("👾 %s", message);
+     response = FL_METHOD_RESPONSE(fl_method_success_response_new(NULL));
   } else {
     response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
   }
