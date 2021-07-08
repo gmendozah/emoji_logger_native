@@ -1,5 +1,6 @@
 package com.gvs.flutter_plugin
 
+import android.util.Log
 import androidx.annotation.NonNull
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -22,10 +23,18 @@ class FlutterPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+    when(call.method) {
+      "debug" -> {
+        val mesage = call.argument<String>("message")!!
+        Log.d("EmojiLogger", "\uD83E\uDD23 $mesage")
+      }
+      "error" -> {
+        val mesage = call.argument<String>("message")!!
+        Log.e("EmojiLogger", "\uD83D\uDC7E $mesage")
+      }
+      else -> {
+        result.notImplemented()
+      }
     }
   }
 
